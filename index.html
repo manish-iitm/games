@@ -1,595 +1,405 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tic Tac Toe: Infinite Moves</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css">
-  <style>
-    body {
-      background: linear-gradient(135deg, #7f5af0, #2cb67d);
-      min-height: 100vh;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    
-    .board-cell {
-      transition: all 0.3s ease;
-      perspective: 1000px;
-    }
-    
-    .board-cell:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    }
-    
-    .mark {
-      transition: all 0.5s ease;
-    }
-    
-    .mark.x {
-      color: #f25f4c;
-    }
-    
-    .mark.o {
-      color: #2cb67d;
-    }
-    
-    .mark.fade-out {
-      opacity: 0;
-      transform: scale(0);
-    }
-    
-    .board-container {
-      perspective: 1000px;
-    }
-    
-    .game-board {
-      transition: transform 0.5s ease;
-    }
-    
-    .game-board:hover {
-      transform: rotateX(5deg);
-    }
-    
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-    
-    .pulse {
-      animation: pulse 1.5s infinite ease-in-out;
-    }
-    
-    .mode-button {
-      transition: all 0.3s ease;
-    }
-    
-    .mode-button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    }
-    
-    .player-marker {
-      display: inline-block;
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
-      margin-right: 5px;
-    }
-    
-    .player-x {
-      background-color: #f25f4c;
-    }
-    
-    .player-o {
-      background-color: #2cb67d;
-    }
-    
-    .move-indicator {
-      position: absolute;
-      font-size: 10px;
-      bottom: 3px;
-      right: 3px;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Hub | Classic Games Collection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+            100% { background-position: 0% 50% }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+            animation: fadeInDown 1s ease;
+        }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+        
+        .games-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-top: 30px;
+        }
+        
+        .game-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            width: 350px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            animation: fadeInUp 1s ease;
+            animation-fill-mode: both;
+        }
+        
+        .game-card:nth-child(1) { animation-delay: 0.2s; }
+        .game-card:nth-child(2) { animation-delay: 0.4s; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .game-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+        
+        .game-header {
+            padding: 25px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .game-title {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .game-icon {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            color: #FFD700;
+        }
+        
+        .game-preview {
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.1);
+        }
+        
+        .tic-tac-toe-board {
+            display: grid;
+            grid-template-columns: repeat(3, 60px);
+            grid-template-rows: repeat(3, 60px);
+            gap: 8px;
+            background: #0d1b2a;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        
+        .cell {
+            background: #1b3a4b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .cell:hover {
+            background: #2a4d69;
+        }
+        
+        .cell.x::before {
+            content: "X";
+            color: #ff6b6b;
+        }
+        
+        .cell.o::before {
+            content: "O";
+            color: #48dbfb;
+        }
+        
+        .chess-board {
+            display: grid;
+            grid-template-columns: repeat(8, 30px);
+            grid-template-rows: repeat(8, 30px);
+            border: 2px solid #333;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        
+        .chess-square {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+        }
+        
+        .light {
+            background-color: #f0d9b5;
+        }
+        
+        .dark {
+            background-color: #b58863;
+        }
+        
+        .game-info {
+            padding: 25px;
+        }
+        
+        .game-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            color: #e0e0e0;
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            text-align: center;
+            background: #FFD700;
+            color: #1a2a6c;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #ffcc00;
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+        
+        .btn i {
+            margin-left: 8px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 0 20px;
+            margin-top: 50px;
+            font-size: 1.1rem;
+            opacity: 0.8;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .games-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
 </head>
-<body class="text-gray-100">
-  <div class="container mx-auto px-4 py-8">
-    <!-- Game title and description -->
-    <div class="text-center mb-6">
-      <h1 class="text-4xl font-extrabold mb-2">Tic Tac Toe: Infinite Moves</h1>
-      <p class="text-xl opacity-90">A mind-bending twist on the classic game!</p>
-      <div class="bg-white bg-opacity-20 p-4 rounded-lg mt-4 inline-block">
-        <p><span class="font-bold">🌀 Special Infinite Rule:</span> You can only have <span class="font-extrabold text-yellow-300">3 marks</span> on the board.</p>
-        <p>When you place your <span class="font-extrabold text-yellow-300">4th mark</span>, your <span class="font-extrabold text-yellow-300">oldest mark</span> will <span class="font-extrabold text-red-400">vanish!</span></p>
-      </div>
-    </div>
-
-    <!-- Mode selection -->
-    <div id="mode-selection" class="max-w-md mx-auto bg-white bg-opacity-10 p-6 rounded-lg shadow-lg backdrop-filter backdrop-blur-sm mb-8">
-      <h2 class="text-2xl font-bold text-center mb-6">Choose Your Mode</h2>
-      <div class="grid grid-cols-1 gap-4">
-        <button id="single-player-btn" class="mode-button bg-purple-600 hover:bg-purple-700 text-white py-3 px-6 rounded-lg font-bold text-lg">
-          <i class="fas fa-robot mr-2"></i> Single Player
-        </button>
-        <button id="two-players-btn" class="mode-button bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg font-bold text-lg">
-          <i class="fas fa-users mr-2"></i> Two Players
-        </button>
-      </div>
-    </div>
-
-    <!-- Difficulty selection -->
-    <div id="difficulty-selection" class="max-w-md mx-auto bg-white bg-opacity-10 p-6 rounded-lg shadow-lg backdrop-filter backdrop-blur-sm mb-8 hidden">
-      <h2 class="text-2xl font-bold text-center mb-6">Select Difficulty</h2>
-      <div class="grid grid-cols-1 gap-4">
-        <button id="easy-btn" class="mode-button bg-green-500 hover:bg-green-600 text-white py-3 px-6 rounded-lg font-bold text-lg">
-          <i class="fas fa-baby mr-2"></i> Easy
-        </button>
-        <button id="medium-btn" class="mode-button bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-6 rounded-lg font-bold text-lg">
-          <i class="fas fa-user mr-2"></i> Medium
-        </button>
-        <button id="hard-btn" class="mode-button bg-red-500 hover:bg-red-600 text-white py-3 px-6 rounded-lg font-bold text-lg">
-          <i class="fas fa-brain mr-2"></i> Hard
-        </button>
-        <button id="back-btn" class="mt-2 text-white py-2 px-4 rounded-lg font-bold">
-          <i class="fas fa-arrow-left mr-2"></i> Back
-        </button>
-      </div>
-    </div>
-
-    <!-- Game area -->
-    <div id="game-area" class="max-w-md mx-auto hidden">
-      <!-- Status area -->
-      <div class="bg-white bg-opacity-10 p-4 rounded-lg shadow-lg backdrop-filter backdrop-blur-sm mb-6">
-        <div class="flex justify-between items-center">
-          <div id="player-x-info" class="flex items-center">
-            <span class="player-marker player-x"></span>
-            <span id="player-x-name" class="font-bold">Player X</span>
-            <span id="player-x-score" class="ml-2 bg-black bg-opacity-20 px-2 py-1 rounded-md">0</span>
-          </div>
-          <div id="player-o-info" class="flex items-center">
-            <span class="player-marker player-o"></span>
-            <span id="player-o-name" class="font-bold">Player O</span>
-            <span id="player-o-score" class="ml-2 bg-black bg-opacity-20 px-2 py-1 rounded-md">0</span>
-          </div>
+<body>
+    <div class="container">
+        <header>
+            <h1>Game Hub</h1>
+            <p class="subtitle">A collection of classic games to challenge your mind and entertain your spirit</p>
+        </header>
+        
+        <div class="games-container">
+            <!-- Tic Tac Toe Card -->
+            <div class="game-card">
+                <div class="game-header">
+                    <div class="game-icon">
+                        <i class="fas fa-times"></i>
+                    </div>
+                    <h2 class="game-title">Tic Tac Toe</h2>
+                </div>
+                <div class="game-preview">
+                    <div class="tic-tac-toe-board">
+                        <div class="cell"></div>
+                        <div class="cell x"></div>
+                        <div class="cell"></div>
+                        <div class="cell o"></div>
+                        <div class="cell x"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell o"></div>
+                        <div class="cell"></div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <p class="game-description">
+                        The classic game of X's and O's. Outsmart your opponent by placing three of your marks in a horizontal, vertical, or diagonal row.
+                    </p>
+                    <a href="tictactoe.html" class="btn">
+                        Play Tic Tac Toe <i class="fas fa-play"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Chess Card -->
+            <div class="game-card">
+                <div class="game-header">
+                    <div class="game-icon">
+                        <i class="fas fa-chess-knight"></i>
+                    </div>
+                    <h2 class="game-title">Chess</h2>
+                </div>
+                <div class="game-preview">
+                    <div class="chess-board">
+                        <!-- Chess board representation -->
+                        <!-- Row 1 -->
+                        <div class="chess-square dark">♜</div>
+                        <div class="chess-square light">♞</div>
+                        <div class="chess-square dark">♝</div>
+                        <div class="chess-square light">♛</div>
+                        <div class="chess-square dark">♚</div>
+                        <div class="chess-square light">♝</div>
+                        <div class="chess-square dark">♞</div>
+                        <div class="chess-square light">♜</div>
+                        
+                        <!-- Row 2 -->
+                        <div class="chess-square light">♟</div>
+                        <div class="chess-square dark">♟</div>
+                        <div class="chess-square light">♟</div>
+                        <div class="chess-square dark">♟</div>
+                        <div class="chess-square light">♟</div>
+                        <div class="chess-square dark">♟</div>
+                        <div class="chess-square light">♟</div>
+                        <div class="chess-square dark">♟</div>
+                        
+                        <!-- Rows 3-6 (empty) -->
+                        <div class="chess-square dark"></div>
+                        <div class="chess-square light"></div>
+                        <div class="chess-square dark"></div>
+                        <div class="chess-square light"></div>
+                        <div class="chess-square dark"></div>
+                        <div class="chess-square light"></div>
+                        <div class="chess-square dark"></div>
+                        <div class="chess-square light"></div>
+                        
+                        <div class="chess-square light"></div>
+                        <div class="chess-square dark"></div>
+                        <div class="chess-square light"></div>
+                        <div class="chess-square dark"></div>
+                        <div class="chess-square light"></div>
+                        <div class="chess-square dark"></div>
+                        <div class="chess-square light"></div>
+                        <div class="chess-square dark"></div>
+                        
+                        <div class="chess-square dark"></div>
+                        <div class="chess-square light"></div>
+                        <div class="chess-square dark"></div>
+                        <div class="chess-square light"></div>
+                        <div class="chess-square dark"></div>
+                        <div class="chess-square light"></div>
+                        <div class="chess-square dark"></div>
+                        <div class="chess-square light"></div>
+                        
+                        <div class="chess-square light"></div>
+                        <div class="chess-square dark"></div>
+                        <div class="chess-square light"></div>
+                        <div class="chess-square dark"></div>
+                        <div class="chess-square light"></div>
+                        <div class="chess-square dark"></div>
+                        <div class="chess-square light"></div>
+                        <div class="chess-square dark"></div>
+                        
+                        <!-- Row 7 -->
+                        <div class="chess-square dark">♙</div>
+                        <div class="chess-square light">♙</div>
+                        <div class="chess-square dark">♙</div>
+                        <div class="chess-square light">♙</div>
+                        <div class="chess-square dark">♙</div>
+                        <div class="chess-square light">♙</div>
+                        <div class="chess-square dark">♙</div>
+                        <div class="chess-square light">♙</div>
+                        
+                        <!-- Row 8 -->
+                        <div class="chess-square light">♖</div>
+                        <div class="chess-square dark">♘</div>
+                        <div class="chess-square light">♗</div>
+                        <div class="chess-square dark">♕</div>
+                        <div class="chess-square light">♔</div>
+                        <div class="chess-square dark">♗</div>
+                        <div class="chess-square light">♘</div>
+                        <div class="chess-square dark">♖</div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <p class="game-description">
+                        The ultimate game of strategy. Plan your moves, protect your king, and checkmate your opponent to claim victory.
+                    </p>
+                    <a href="chess.html" class="btn">
+                        Play Chess <i class="fas fa-play"></i>
+                    </a>
+                </div>
+            </div>
         </div>
-        <div id="status-message" class="text-center mt-2 font-bold text-xl">Player X's turn</div>
-      </div>
-
-      <!-- Game board -->
-      <div class="board-container">
-        <div id="game-board" class="game-board grid grid-cols-3 gap-4 mb-6">
-          <div class="board-cell relative bg-white bg-opacity-10 h-24 rounded-lg shadow-md flex items-center justify-center text-4xl cursor-pointer" data-index="0"></div>
-          <div class="board-cell relative bg-white bg-opacity-10 h-24 rounded-lg shadow-md flex items-center justify-center text-4xl cursor-pointer" data-index="1"></div>
-          <div class="board-cell relative bg-white bg-opacity-10 h-24 rounded-lg shadow-md flex items-center justify-center text-4xl cursor-pointer" data-index="2"></div>
-          <div class="board-cell relative bg-white bg-opacity-10 h-24 rounded-lg shadow-md flex items-center justify-center text-4xl cursor-pointer" data-index="3"></div>
-          <div class="board-cell relative bg-white bg-opacity-10 h-24 rounded-lg shadow-md flex items-center justify-center text-4xl cursor-pointer" data-index="4"></div>
-          <div class="board-cell relative bg-white bg-opacity-10 h-24 rounded-lg shadow-md flex items-center justify-center text-4xl cursor-pointer" data-index="5"></div>
-          <div class="board-cell relative bg-white bg-opacity-10 h-24 rounded-lg shadow-md flex items-center justify-center text-4xl cursor-pointer" data-index="6"></div>
-          <div class="board-cell relative bg-white bg-opacity-10 h-24 rounded-lg shadow-md flex items-center justify-center text-4xl cursor-pointer" data-index="7"></div>
-          <div class="board-cell relative bg-white bg-opacity-10 h-24 rounded-lg shadow-md flex items-center justify-center text-4xl cursor-pointer" data-index="8"></div>
-        </div>
-      </div>
-
-      <!-- Control buttons -->
-      <div class="flex justify-between">
-        <button id="reset-btn" class="bg-yellow-600 hover:bg-yellow-700 text-white py-2 px-6 rounded-lg font-bold">
-          <i class="fas fa-redo mr-2"></i> Reset Game
-        </button>
-        <button id="menu-btn" class="bg-gray-600 hover:bg-gray-700 text-white py-2 px-6 rounded-lg font-bold">
-          <i class="fas fa-home mr-2"></i> Main Menu
-        </button>
-      </div>
+        
+        <footer>
+            <p>Game Hub &copy; 2025 | Classic Games Collection</p>
+        </footer>
     </div>
-  </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Game variables
-      let gameMode = null; // 'single' or 'two'
-      let aiDifficulty = null; // 'easy', 'medium', 'hard'
-      let currentPlayer = 'X';
-      let gameActive = true;
-      let moves = [];
-      let xMoves = [];
-      let oMoves = [];
-      let gameBoard = Array(9).fill('');
-      let scores = {X: 0, O: 0};
-      
-      // DOM elements
-      const modeSelectionDiv = document.getElementById('mode-selection');
-      const difficultySelectionDiv = document.getElementById('difficulty-selection');
-      const gameAreaDiv = document.getElementById('game-area');
-      const boardCells = document.querySelectorAll('.board-cell');
-      const statusMessage = document.getElementById('status-message');
-      const playerXScore = document.getElementById('player-x-score');
-      const playerOScore = document.getElementById('player-o-score');
-      const playerXName = document.getElementById('player-x-name');
-      const playerOName = document.getElementById('player-o-name');
-      
-      // Buttons
-      const singlePlayerBtn = document.getElementById('single-player-btn');
-      const twoPlayersBtn = document.getElementById('two-players-btn');
-      const easyBtn = document.getElementById('easy-btn');
-      const mediumBtn = document.getElementById('medium-btn');
-      const hardBtn = document.getElementById('hard-btn');
-      const backBtn = document.getElementById('back-btn');
-      const resetBtn = document.getElementById('reset-btn');
-      const menuBtn = document.getElementById('menu-btn');
-      
-      // Winning patterns
-      const winPatterns = [
-        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-        [0, 4, 8], [2, 4, 6] // Diagonals
-      ];
-      
-      // Event listeners for mode selection
-      singlePlayerBtn.addEventListener('click', () => {
-        gameMode = 'single';
-        modeSelectionDiv.classList.add('hidden');
-        difficultySelectionDiv.classList.remove('hidden');
-      });
-      
-      twoPlayersBtn.addEventListener('click', () => {
-        gameMode = 'two';
-        playerXName.textContent = 'Player X';
-        playerOName.textContent = 'Player O';
-        modeSelectionDiv.classList.add('hidden');
-        gameAreaDiv.classList.remove('hidden');
-        resetGame();
-      });
-      
-      // Event listeners for difficulty selection
-      easyBtn.addEventListener('click', () => {
-        aiDifficulty = 'easy';
-        playerXName.textContent = 'You (X)';
-        playerOName.textContent = 'AI (O)';
-        difficultySelectionDiv.classList.add('hidden');
-        gameAreaDiv.classList.remove('hidden');
-        resetGame();
-      });
-      
-      mediumBtn.addEventListener('click', () => {
-        aiDifficulty = 'medium';
-        playerXName.textContent = 'You (X)';
-        playerOName.textContent = 'AI (O)';
-        difficultySelectionDiv.classList.add('hidden');
-        gameAreaDiv.classList.remove('hidden');
-        resetGame();
-      });
-      
-      hardBtn.addEventListener('click', () => {
-        aiDifficulty = 'hard';
-        playerXName.textContent = 'You (X)';
-        playerOName.textContent = 'AI (O)';
-        difficultySelectionDiv.classList.add('hidden');
-        gameAreaDiv.classList.remove('hidden');
-        resetGame();
-      });
-      
-      backBtn.addEventListener('click', () => {
-        difficultySelectionDiv.classList.add('hidden');
-        modeSelectionDiv.classList.remove('hidden');
-      });
-      
-      // Game control buttons
-      resetBtn.addEventListener('click', resetGame);
-      menuBtn.addEventListener('click', () => {
-        gameAreaDiv.classList.add('hidden');
-        modeSelectionDiv.classList.remove('hidden');
-        difficultySelectionDiv.classList.add('hidden');
-        scores = {X: 0, O: 0};
-        updateScoreboard();
-      });
-      
-      // Add click handlers to board cells
-      boardCells.forEach(cell => {
-        cell.addEventListener('click', () => {
-          const index = parseInt(cell.getAttribute('data-index'));
-          handleCellClick(index);
-        });
-      });
-      
-      // Handle cell click
-      function handleCellClick(index) {
-        if (!gameActive || gameBoard[index] !== '') return;
-        
-        makeMove(index);
-        
-        // Check if the game is over after player move
-        if (gameActive && gameMode === 'single') {
-          setTimeout(() => {
-            makeAIMove();
-          }, 500);
-        }
-      }
-      
-      // Make a move
-      function makeMove(index) {
-        gameBoard[index] = currentPlayer;
-        moves.push({player: currentPlayer, index: index});
-        
-        // Track moves for each player
-        if (currentPlayer === 'X') {
-          xMoves.push(index);
-          if (xMoves.length > 3) {
-            removeOldestMark('X');
-          }
-        } else {
-          oMoves.push(index);
-          if (oMoves.length > 3) {
-            removeOldestMark('O');
-          }
-        }
-        
-        // Update UI
-        updateBoardUI();
-        
-        // Check for win
-        if (checkWin()) {
-          gameActive = false;
-          scores[currentPlayer]++;
-          updateScoreboard();
-          statusMessage.textContent = `${currentPlayer === 'X' ? playerXName.textContent : playerOName.textContent} wins!`;
-          return;
-        }
-        
-        // Check for draw (all cells filled)
-        if (!gameBoard.includes('')) {
-          gameActive = false;
-          statusMessage.textContent = "It's a draw!";
-          return;
-        }
-        
-        // Switch player
-        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-        statusMessage.textContent = `${currentPlayer === 'X' ? playerXName.textContent : playerOName.textContent}'s turn`;
-      }
-      
-      // Remove the oldest mark of a player
-      function removeOldestMark(player) {
-        const movesArray = player === 'X' ? xMoves : oMoves;
-        const oldestMoveIndex = movesArray.shift();
-        
-        // Visual feedback for vanishing mark
-        const cell = document.querySelector(`.board-cell[data-index="${oldestMoveIndex}"]`);
-        const mark = cell.querySelector('.mark');
-        if (mark) {
-          mark.classList.add('fade-out');
-          setTimeout(() => {
-            gameBoard[oldestMoveIndex] = '';
-            updateBoardUI();
-          }, 300);
-        }
-      }
-      
-      // Update the board UI
-      function updateBoardUI() {
-        boardCells.forEach((cell, index) => {
-          cell.innerHTML = '';
-          if (gameBoard[index]) {
-            const marker = document.createElement('span');
-            marker.className = `mark ${gameBoard[index].toLowerCase()}`;
-            marker.innerHTML = gameBoard[index] === 'X' ? 
-              '<i class="fas fa-times"></i>' : 
-              '<i class="fas fa-circle"></i>';
-            cell.appendChild(marker);
+    <script>
+        // Simple animation for the Tic Tac Toe board
+        document.addEventListener('DOMContentLoaded', function() {
+            const cells = document.querySelectorAll('.cell');
+            let currentPlayer = 'x';
             
-            // Add move indicators for the last 3 moves for each player
-            const xIndex = xMoves.indexOf(index);
-            if (xIndex !== -1 && xIndex >= Math.max(0, xMoves.length - 3)) {
-              const indicator = document.createElement('span');
-              indicator.className = 'move-indicator text-red-400';
-              indicator.textContent = xMoves.length - xIndex;
-              cell.appendChild(indicator);
-            }
-            
-            const oIndex = oMoves.indexOf(index);
-            if (oIndex !== -1 && oIndex >= Math.max(0, oMoves.length - 3)) {
-              const indicator = document.createElement('span');
-              indicator.className = 'move-indicator text-green-400';
-              indicator.textContent = oMoves.length - oIndex;
-              cell.appendChild(indicator);
-            }
-          }
-        });
-      }
-      
-      // Update the scoreboard
-      function updateScoreboard() {
-        playerXScore.textContent = scores.X;
-        playerOScore.textContent = scores.O;
-      }
-      
-      // Check for win
-      function checkWin() {
-        // Create separate board states for X and O based on their last 3 moves
-        const xBoard = Array(9).fill('');
-        const oBoard = Array(9).fill('');
-        
-        // Fill boards with the last 3 moves
-        const lastXMoves = xMoves.slice(-3);
-        const lastOMoves = oMoves.slice(-3);
-        
-        lastXMoves.forEach(index => xBoard[index] = 'X');
-        lastOMoves.forEach(index => oBoard[index] = 'O');
-        
-        // Check if any player has a winning pattern
-        if (currentPlayer === 'X') {
-          for (const pattern of winPatterns) {
-            if (pattern.every(index => xBoard[index] === 'X')) {
-              highlightWinningCells(pattern);
-              return true;
-            }
-          }
-        } else {
-          for (const pattern of winPatterns) {
-            if (pattern.every(index => oBoard[index] === 'O')) {
-              highlightWinningCells(pattern);
-              return true;
-            }
-          }
-        }
-        
-        return false;
-      }
-      
-      // Highlight winning cells
-      function highlightWinningCells(pattern) {
-        pattern.forEach(index => {
-          const cell = document.querySelector(`.board-cell[data-index="${index}"]`);
-          cell.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
-          cell.classList.add('pulse');
-        });
-      }
-      
-      // AI move logic
-      function makeAIMove() {
-        if (!gameActive) return;
-        
-        let index;
-        
-        switch (aiDifficulty) {
-          case 'easy':
-            index = makeRandomMove();
-            break;
-          case 'medium':
-            // 50% chance of making a smart move
-            if (Math.random() > 0.5) {
-              index = makeSmartMove();
-            } else {
-              index = makeRandomMove();
-            }
-            break;
-          case 'hard':
-            index = makeSmartMove();
-            break;
-          default:
-            index = makeRandomMove();
-        }
-        
-        makeMove(index);
-      }
-      
-      // Make a random move (for easy AI)
-      function makeRandomMove() {
-        const emptyCells = gameBoard.reduce((acc, cell, index) => {
-          if (cell === '') acc.push(index);
-          return acc;
-        }, []);
-        
-        if (emptyCells.length === 0) return null;
-        return emptyCells[Math.floor(Math.random() * emptyCells.length)];
-      }
-      
-      // Make a smart move (for medium/hard AI)
-      function makeSmartMove() {
-        // Create a copy of the game state
-        const oBoard = Array(9).fill('');
-        const xBoard = Array(9).fill('');
-        
-        // Fill boards with the last moves (limited to 3)
-        const lastXMoves = xMoves.slice(-3);
-        const lastOMoves = oMoves.slice(-3);
-        
-        lastXMoves.forEach(index => xBoard[index] = 'X');
-        lastOMoves.forEach(index => oBoard[index] = 'O');
-        
-        // Check if AI can win with the next move
-        for (let i = 0; i < 9; i++) {
-          if (gameBoard[i] === '') {
-            // Check if this would be the 4th O move
-            const newOMoves = [...oMoves, i];
-            if (newOMoves.length > 3) {
-              // If 4th move, we need to remove the oldest
-              const tempOBoard = Array(9).fill('');
-              newOMoves.slice(-3).forEach(idx => tempOBoard[idx] = 'O');
-              
-              // Check if this creates a win
-              for (const pattern of winPatterns) {
-                if (pattern.every(idx => tempOBoard[idx] === 'O')) {
-                  return i;
+            cells.forEach(cell => {
+                if (!cell.classList.contains('x') && !cell.classList.contains('o')) {
+                    cell.addEventListener('click', function() {
+                        if (!this.classList.contains('x') && !this.classList.contains('o')) {
+                            this.classList.add(currentPlayer);
+                            currentPlayer = currentPlayer === 'x' ? 'o' : 'x';
+                        }
+                    });
                 }
-              }
-            } else {
-              // Less than 4 moves, just add to the board
-              oBoard[i] = 'O';
-              
-              // Check if this creates a win
-              for (const pattern of winPatterns) {
-                if (pattern.every(idx => oBoard[idx] === 'O')) {
-                  return i;
-                }
-              }
-              
-              // Reset for next iteration
-              oBoard[i] = '';
-            }
-          }
-        }
-        
-        // Block player's winning move
-        for (let i = 0; i < 9; i++) {
-          if (gameBoard[i] === '') {
-            // Check if this would prevent player's win
-            xBoard[i] = 'X';
-            
-            for (const pattern of winPatterns) {
-              if (pattern.every(idx => xBoard[idx] === 'X')) {
-                return i;
-              }
-            }
-            
-            // Reset for next iteration
-            xBoard[i] = '';
-          }
-        }
-        
-        // Try to play center
-        if (gameBoard[4] === '') return 4;
-        
-        // Try to play corners
-        const corners = [0, 2, 6, 8];
-        const availableCorners = corners.filter(i => gameBoard[i] === '');
-        if (availableCorners.length > 0) {
-          return availableCorners[Math.floor(Math.random() * availableCorners.length)];
-        }
-        
-        // Play any available edge
-        const edges = [1, 3, 5, 7];
-        const availableEdges = edges.filter(i => gameBoard[i] === '');
-        if (availableEdges.length > 0) {
-          return availableEdges[Math.floor(Math.random() * availableEdges.length)];
-        }
-        
-        // If all else fails, make a random move
-        return makeRandomMove();
-      }
-      
-      // Reset game
-      function resetGame() {
-        gameBoard = Array(9).fill('');
-        moves = [];
-        xMoves = [];
-        oMoves = [];
-        currentPlayer = 'X';
-        gameActive = true;
-        statusMessage.textContent = `${playerXName.textContent}'s turn`;
-        
-        // Reset board UI
-        boardCells.forEach(cell => {
-          cell.innerHTML = '';
-          cell.style.backgroundColor = '';
-          cell.classList.remove('pulse');
+            });
         });
-        
-        updateBoardUI();
-      }
-    });
-  </script>
+    </script>
 </body>
 </html>
